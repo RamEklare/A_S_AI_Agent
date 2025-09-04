@@ -1,10 +1,11 @@
+
+from datetime import datetime
 import pandas as pd
 import os
-from datetime import datetime
 
 PATIENT_CSV = "./patients_sample_50.csv"
 BOOKINGS_XLSX = "./bookings.xlsx"
-DOCTOR_SCHEDULER_XLSX = "./data/doctor_schedules_sample.xlsx"
+DOCTOR_SCHEDULES_XLSX = "./doctor_schedules_sample.xlsx"  # your actual file
 
 
 def load_patients():
@@ -12,23 +13,23 @@ def load_patients():
     return pd.read_csv(PATIENT_CSV)
 
 
-def book_appointment(patient_id, doctor_id, slot_index=0):
+def book_appointment(patient_id, doctor_name, slot_index=0):
     """
-    Book an appointment automatically by looking up doctor_id and slot info
-    from the scheduler Excel. slot_index lets you pick which slot for that doctor.
+    Book an appointment automatically by looking up doctor_name and slot info
+    from your doctor_schedules_sample Excel. slot_index lets you pick which slot.
     """
 
     # 1. Load patient info
     patients = pd.read_csv(PATIENT_CSV)
     patient = patients.loc[patients['patient_id'] == patient_id].iloc[0]
 
-    # 2. Load doctor scheduler
-    sched = pd.read_excel(DOCTOR_SCHEDULER_XLSX)
+    # 2. Load your doctor schedules
+    sched = pd.read_excel(DOCTOR_SCHEDULES_XLSX)
 
-    # 3. Filter by doctor_id
-    doctor_rows = sched[sched['doctor_id'] == doctor_id]
+    # 3. Filter by doctor_name
+    doctor_rows = sched[sched['doctor_name'] == doctor_name]
     if doctor_rows.empty:
-        raise ValueError(f"No doctor_id {doctor_id} found in scheduler")
+        raise ValueError(f"No doctor_name {doctor_name} found in {DOCTOR_SCHEDULES_XLSX}")
 
     # 4. Pick the slot_index-th row
     slot = doctor_rows.iloc[slot_index]
@@ -36,13 +37,13 @@ def book_appointment(patient_id, doctor_id, slot_index=0):
     # 5. Append booking row into bookings.xlsx
     return _append_booking(
         patient,
-        slot['doctor_id'],
+        slot.get('doctor_id', ""),          # use empty string if no doctor_id col
         slot['doctor_name'],
         slot['date'],
         slot['slot_start'],
         slot['slot_end'],
         slot['duration_mins'],
-        slot['status'],
+        slot.get('status', ""),
         slot.get('insurance_carrier', ""),
         slot.get('insurance_member_id', ""),
         slot.get('cancel_reason', ""),
@@ -120,4 +121,6 @@ def upload_form(booking_id, file_path):
     # Update form_status
     bookings.loc[bookings['booking_id'] == booking_id, "form_status"] = "uploaded"
     bookings.to_excel(BOOKINGS_XLSX, index=False)
+    return file_name
+
     return file_name

@@ -1,0 +1,51 @@
+patient_id,name,dob,age,gender,phone,email,address,medical_history,allergies,preferred_language,insurance_provider
+P0001,Vihaan Sharma,2006-07-12,19,Male,+916958682846,vihaan.sharma18@example.com,"764, Station Road, Pune",Diabetes,Pollen,Gujarati,HealthFirst
+P0002,Aarav Singh,1959-08-13,66,Male,+918585650756,aarav.singh4@example.com,"584, Station Road, Pune",Heart Disease,Penicillin,Gujarati,No Insurance
+P0003,Priya Sharma,2008-01-28,17,Female,+918998485882,priya.sharma55@example.com,"358, Station Road, Pune",None,Sulfa Drugs,Marathi,HealthFirst
+P0004,Aditya Kapoor,1948-09-04,77,Male,+917477278577,aditya.kapoor78@example.com,"280, MG Road, Pune",Allergic Rhinitis,Pollen,English,LifeShield
+P0005,Aditya Bose,1966-04-20,59,Female,+918656522106,aditya.bose47@example.com,"601, Station Road, Pune",Diabetes,None,Telugu,MediCover
+P0006,Riya Singh,1960-11-19,64,Female,+917632629719,riya.singh36@example.com,"474, MG Road, Pune",COPD,Penicillin,Marathi,ArogyaCare
+P0007,Isha Iyer,2002-12-18,22,Female,+918783290795,isha.iyer10@example.com,"633, MG Road, Pune",None,Penicillin,Gujarati,LifeShield
+P0008,Priya Bose,1959-09-14,66,Female,+919620021413,priya.bose99@example.com,"804, Station Road, Pune",Hypertension,Sulfa Drugs,Marathi,LifeShield
+P0009,Priya Singh,1958-12-05,66,Female,+918436019774,priya.singh92@example.com,"332, Station Road, Pune",Allergic Rhinitis,Shellfish,Telugu,LifeShield
+P0010,Arjun Iyer,1952-07-11,73,Male,+918411057787,arjun.iyer69@example.com,"279, MG Road, Pune",Heart Disease,Pollen,Gujarati,ArogyaCare
+P0011,Aanya Gupta,1985-09-17,39,Female,+919246059658,aanya.gupta7@example.com,"891, Station Road, Pune",Asthma,Sulfa Drugs,Telugu,LifeShield
+P0012,Kabir Singh,1974-07-09,51,Male,+918010258946,kabir.singh68@example.com,"267, MG Road, Pune",Hypertension,Latex,Telugu,HealthFirst
+P0013,Maya Iyer,2008-12-14,16,Female,+916479112937,maya.iyer38@example.com,"455, Station Road, Pune",Hypertension,Latex,Telugu,ArogyaCare
+P0014,Kavya Joshi,1985-07-18,40,Female,+919738848790,kavya.joshi81@example.com,"315, MG Road, Pune",None,Penicillin,Marathi,MediCover
+P0015,Maya Srivastava,1940-01-19,85,Female,+918098545541,maya.srivastava3@example.com,"124, MG Road, Pune",Hypothyroidism,Penicillin,English,MediCover
+P0016,Ishaan Singh,1947-09-07,78,Female,+919504793184,ishaan.singh9@example.com,"788, MG Road, Pune",Asthma,Penicillin,Telugu,LifeShield
+P0017,Maya Joshi,1963-10-12,61,Female,+918605301030,maya.joshi55@example.com,"997, Station Road, Pune",None,Latex,Marathi,LifeShield
+P0018,Karan Jain,1986-06-07,39,Male,+917064746525,karan.jain29@example.com,"75, Station Road, Pune",None,Pollen,Hindi,HealthFirst
+P0019,Aditya Patel,1960-07-15,65,Male,+916134917627,aditya.patel43@example.com,"82, MG Road, Pune",Hypothyroidism,Latex,Gujarati,MediCover
+P0020,Maya Gupta,2004-11-22,20,Female,+918452611418,maya.gupta74@example.com,"494, Station Road, Pune",Allergic Rhinitis,Sulfa Drugs,Gujarati,MediCover
+P0021,Vihaan Kumar,1999-02-13,26,Male,+917819256337,vihaan.kumar53@example.com,"488, MG Road, Pune",Hypertension,Latex,Telugu,HealthFirst
+P0022,Vivaan Kapoor,2005-05-01,20,Male,+919700855390,vivaan.kapoor14@example.com,"264, Station Road, Pune",Allergic Rhinitis,Penicillin,Gujarati,MediCover
+P0023,Priya Jain,1962-05-30,63,Female,+916323775634,priya.jain57@example.com,"837, MG Road, Pune",Diabetes,None,Telugu,No Insurance
+P0024,Aarav Singh,2007-08-09,18,Female,+916714300770,aarav.singh53@example.com,"507, Station Road, Pune",Heart Disease,None,Hindi,LifeShield
+P0025,Aarav Kapoor,1963-10-17,61,Female,+919372104909,aarav.kapoor59@example.com,"302, Station Road, Pune",Allergic Rhinitis,Penicillin,Hindi,ArogyaCare
+P0026,Isha Patel,1991-12-17,33,Female,+916261810763,isha.patel96@example.com,"331, Station Road, Pune",Allergic Rhinitis,Pollen,Tamil,MediCover
+P0027,Vivaan Srivastava,1947-03-10,78,Female,+916294296873,vivaan.srivastava77@example.com,"79, MG Road, Pune",None,Shellfish,English,No Insurance
+P0028,Aanya Naik,1993-05-03,32,Male,+916352116052,aanya.naik54@example.com,"683, MG Road, Pune",COPD,Peanuts,Hindi,ArogyaCare
+P0029,Aanya Iyer,1975-07-05,50,Male,+918772404776,aanya.iyer39@example.com,"478, Station Road, Pune",Diabetes,None,Gujarati,No Insurance
+P0030,Ishaan Kumar,1946-07-28,79,Female,+918172758220,ishaan.kumar34@example.com,"145, MG Road, Pune",Diabetes,Penicillin,Marathi,ArogyaCare
+P0031,Saanvi Jain,1988-09-25,36,Female,+918627135980,saanvi.jain84@example.com,"551, Station Road, Pune",Hypothyroidism,Latex,English,MediCover
+P0032,Priya Kumar,1949-08-08,76,Female,+916667643690,priya.kumar35@example.com,"298, MG Road, Pune",COPD,Penicillin,Telugu,ArogyaCare
+P0033,Kavya Malhotra,1962-07-12,63,Female,+919633987776,kavya.malhotra7@example.com,"104, MG Road, Pune",Hypothyroidism,None,English,ArogyaCare
+P0034,Arjun Iyer,1954-06-30,71,Female,+918369449369,arjun.iyer91@example.com,"447, MG Road, Pune",Diabetes,None,Telugu,MediCover
+P0035,Maya Patel,1973-02-14,52,Female,+916636057975,maya.patel56@example.com,"140, Station Road, Pune",COPD,Sulfa Drugs,English,ArogyaCare
+P0036,Isha Reddy,1999-11-01,25,Male,+919350573756,isha.reddy72@example.com,"915, MG Road, Pune",Asthma,Penicillin,Hindi,MediCover
+P0037,Sneha Sharma,1956-02-03,69,Female,+917426725702,sneha.sharma53@example.com,"831, MG Road, Pune",None,Peanuts,Hindi,HealthFirst
+P0038,Neha Patel,1982-03-24,43,Male,+919507212752,neha.patel59@example.com,"368, Station Road, Pune",None,Penicillin,English,MediCover
+P0039,Neha Chawla,1964-12-29,60,Female,+919321412630,neha.chawla36@example.com,"369, MG Road, Pune",Heart Disease,Latex,Tamil,ArogyaCare
+P0040,Aarav Kumar,1963-06-08,62,Male,+917140169349,aarav.kumar5@example.com,"121, MG Road, Pune",COPD,Latex,Marathi,LifeShield
+P0041,Kabir Srivastava,1950-05-17,75,Male,+918476426797,kabir.srivastava25@example.com,"270, Station Road, Pune",Heart Disease,None,Tamil,No Insurance
+P0042,Isha Nair,1978-09-10,47,Male,+918852879124,isha.nair43@example.com,"648, Station Road, Pune",Diabetes,Latex,Marathi,No Insurance
+P0043,Riya Verma,1969-04-06,56,Male,+917269829408,riya.verma71@example.com,"140, Station Road, Pune",Heart Disease,Latex,Telugu,MediCover
+P0044,Kabir Naik,1966-12-31,58,Male,+919580822352,kabir.naik1@example.com,"321, Station Road, Pune",Heart Disease,Sulfa Drugs,Tamil,No Insurance
+P0045,Rahul Jain,1979-08-20,46,Male,+916917840538,rahul.jain66@example.com,"494, MG Road, Pune",Asthma,Latex,English,ArogyaCare
+P0046,Kavya Kulkarni,1970-01-26,55,Male,+919226113732,kavya.kulkarni31@example.com,"698, Station Road, Pune",None,Penicillin,English,HealthFirst
+P0047,Aanya Malhotra,1994-11-03,30,Female,+916312794864,aanya.malhotra59@example.com,"434, MG Road, Pune",None,Latex,Telugu,LifeShield
+P0048,Vikram Kapoor,1961-11-20,63,Male,+918953315788,vikram.kapoor1@example.com,"924, MG Road, Pune",Diabetes,Sulfa Drugs,Gujarati,MediCover
+P0049,Saanvi Srivastava,1981-09-04,44,Male,+917070298438,saanvi.srivastava16@example.com,"477, Station Road, Pune",Allergic Rhinitis,Latex,Tamil,No Insurance
+P0050,Kabir Chawla,2007-10-04,17,Female,+918631321682,kabir.chawla93@example.com,"923, MG Road, Pune",Allergic Rhinitis,Penicillin,Telugu,LifeShield

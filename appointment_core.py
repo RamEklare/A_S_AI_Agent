@@ -13,8 +13,8 @@ def book_appointment(patient_id, doctor, date_time):
     if os.path.exists(BOOKINGS_XLSX):
         bookings = pd.read_excel(BOOKINGS_XLSX)
     else:
-        bookings = pd.DataFrame(columns=["booking_id","patient_id",'patient_name','doctor_id','doctor_name','date','slot_start','slot_end','duration_mins',
-                                        'status','insurance_carrier','insurance_member_id','created_at','email','phone','cancel_reason',
+        bookings = pd.DataFrame(columns=["patient_id","name",'dob','age','gender','phone','email','address','medical_history',
+                                        'allergies','insurance_carrier','insurance_member_id','created_at','email','phone','cancel_reason',
                                           'confirmed','calendly_event_link',"doctor","date_time","form_status"])
     booking_id = len(bookings)+1
     new_row = {"booking_id":booking_id,

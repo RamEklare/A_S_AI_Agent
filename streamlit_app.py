@@ -15,7 +15,11 @@ patient_id = patients.loc[patients['name']==patient_choice,'patient_id'].values[
 
 # --- Book appointment ---
 st.header("Book Appointment")
-doctor = st.selectbox("Doctor", ["Dr. Smith","Dr. Patel","Dr. Lee"])
+doctor = st.selectbox("Doctor", ['Dr. Asha Kulkarni', 'Dr. Sameer Desai', 'Dr. Meera Iyer', 
+
+'Dr. Rahul Verma', 'Dr. Priya Nair', 'Dr. Vikram Joshi', 'Dr. Kavita Patel', 
+
+'Dr. Arjun Rao'])
 date = st.date_input("Date")
 time = st.time_input("Time")
 if st.button("Book Appointment"):

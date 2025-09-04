@@ -17,7 +17,7 @@ def book_appointment(patient_id, doctor, date_time):
                                         'allergies','preferred_language','insurance_provider','created_at','cancel_reason',
                                           'confirmed','calendly_event_link',"doctor","date_time","form_status"])
     booking_id = len(bookings)+1
-    new_row = {"patient_id":booking_id,
+    new_row = {"patient_id":patient_id,
                "name":name,
                'dob':dob,
                'age':age,

@@ -4,14 +4,44 @@ from datetime import datetime
 
 PATIENT_CSV = "./patients_sample_50.csv"
 BOOKINGS_XLSX = "./bookings.xlsx"
+DOCTOR_XLSX = "./doctor_schedules_sample.xlsx"  # <- your doctor schedule file
 
 def load_patients():
+    """Load all patients from CSV."""
     return pd.read_csv(PATIENT_CSV)
 
+def get_doctors():
+    """Load all available doctors from the doctor schedule file."""
+    if not os.path.exists(DOCTOR_XLSX):
+        raise FileNotFoundError(f"Doctor schedule file {DOCTOR_XLSX} not found")
+    df = pd.read_excel(DOCTOR_XLSX)
+    # Adjust column name if needed: e.g., "Doctor" or "doctor_name"
+    doctor_col = None
+    for col in df.columns:
+        if col.lower() in ("doctor", "doctor_name", "name"):
+            doctor_col = col
+            break
+    if doctor_col is None:
+        raise ValueError(f"No doctor column found in {DOCTOR_XLSX}. Columns: {df.columns}")
+    return df[doctor_col].unique()
+
 def book_appointment(patient_id, doctor, date_time):
+    """Book an appointment for a patient with a doctor at date_time."""
+    # Validate patient exists
     patients = pd.read_csv(PATIENT_CSV)
+    if patient_id not in patients['patient_id'].values:
+        raise ValueError(f"Patient ID {patient_id} not found in {PATIENT_CSV}")
     patient = patients.loc[patients['patient_id'] == patient_id].iloc[0]
 
+    # Validate doctor exists
+    valid_doctors = get_doctors()
+    if doctor not in valid_doctors:
+        raise ValueError(
+            f"No doctor '{doctor}' found in {DOCTOR_XLSX}. "
+            f"Available doctors: {list(valid_doctors)}"
+        )
+
+    # Load existing bookings or create new DataFrame
     if os.path.exists(BOOKINGS_XLSX):
         bookings = pd.read_excel(BOOKINGS_XLSX)
     else:
@@ -52,9 +82,13 @@ def book_appointment(patient_id, doctor, date_time):
     return booking_id
 
 def upload_form(booking_id, file_path):
+    """Upload a form for a given booking."""
+    if not os.path.exists(BOOKINGS_XLSX):
+        raise FileNotFoundError(f"{BOOKINGS_XLSX} not found")
+
     bookings = pd.read_excel(BOOKINGS_XLSX)
     if booking_id not in bookings['booking_id'].values:
-        raise ValueError("Booking ID not found")
+        raise ValueError(f"Booking ID {booking_id} not found in {BOOKINGS_XLSX}")
 
     os.makedirs("uploaded_forms", exist_ok=True)
     file_name = f"uploaded_forms/{booking_id}_{os.path.basename(file_path)}"

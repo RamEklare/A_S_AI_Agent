@@ -39,7 +39,7 @@ def book_appointment(patient_id, doctor_name, date_time):
     doctor_id = doc_info['doctor_id']
     start_time = doc_info['start_time']
     end_time = doc_info['end_time']
-    specality = doc_info['specality']
+    specialty = doc_info['specialty']
 
     if os.path.exists(BOOKINGS_XLSX):
         bookings = pd.read_excel(BOOKINGS_XLSX)
@@ -48,7 +48,7 @@ def book_appointment(patient_id, doctor_name, date_time):
             "booking_id","patient_id","name",'dob','age','gender','phone','email','address',
             'medical_history','allergies','preferred_language','insurance_provider',
             'created_at','cancel_reason','confirmed','calendly_event_link',
-            "doctor_name","doctor_id","start_time","end_time",'specality',"date_time","form_status"
+            "doctor_name","doctor_id","start_time","end_time",'specialty',"date_time","form_status"
         ])
 
     booking_id = len(bookings) + 1
@@ -75,7 +75,7 @@ def book_appointment(patient_id, doctor_name, date_time):
         "doctor_id": doctor_id,
         "start_time": start_time,
         "end_time": end_time,
-        'specality':specality,
+        'specialty':specialty,
         "date_time": date_time,
         "form_status": "pending"
     }

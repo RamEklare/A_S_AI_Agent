@@ -1,126 +1,66 @@
-
-from datetime import datetime
 import pandas as pd
 import os
+from datetime import datetime
 
 PATIENT_CSV = "./patients_sample_50.csv"
 BOOKINGS_XLSX = "./bookings.xlsx"
-DOCTOR_SCHEDULES_XLSX = "./doctor_schedules_sample.xlsx"  # your actual file
-
 
 def load_patients():
-    """Load patient data from CSV."""
     return pd.read_csv(PATIENT_CSV)
 
-
-def book_appointment(patient_id, doctor_name, slot_index=0):
-    """
-    Book an appointment automatically by looking up doctor_name and slot info
-    from your doctor_schedules_sample Excel. slot_index lets you pick which slot.
-    """
-
-    # 1. Load patient info
+def book_appointment(patient_id, doctor, date_time):
     patients = pd.read_csv(PATIENT_CSV)
     patient = patients.loc[patients['patient_id'] == patient_id].iloc[0]
 
-    # 2. Load your doctor schedules
-    sched = pd.read_excel(DOCTOR_SCHEDULES_XLSX)
-
-    # 3. Filter by doctor_name
-    doctor_rows = sched[sched['doctor_name'] == doctor_name]
-    if doctor_rows.empty:
-        raise ValueError(f"No doctor_name {doctor_name} found in {DOCTOR_SCHEDULES_XLSX}")
-
-    # 4. Pick the slot_index-th row
-    slot = doctor_rows.iloc[slot_index]
-
-    # 5. Append booking row into bookings.xlsx
-    return _append_booking(
-        patient,
-        slot.get('doctor_id', ""),          # use empty string if no doctor_id col
-        slot['doctor_name'],
-        slot['date'],
-        slot['slot_start'],
-        slot['slot_end'],
-        slot['duration_mins'],
-        slot.get('status', ""),
-        slot.get('insurance_carrier', ""),
-        slot.get('insurance_member_id', ""),
-        slot.get('cancel_reason', ""),
-        slot.get('calendly_event_link', "")
-    )
-
-
-def _append_booking(patient, doctor_id, doctor_name, date, slot_start, slot_end,
-                    duration_mins, status, insurance_carrier, insurance_member_id,
-                    cancel_reason, calendly_event_link):
-    """internal helper to append booking row to Excel"""
-    required_columns = [
-        "booking_id", "patient_id", "patient_name",
-        "doctor_id", "doctor_name", "date", "slot_start", "slot_end", "duration_mins",
-        "status", "insurance_carrier", "insurance_member_id", "cancel_reason", "calendly_event_link",
-        "form_status"
-    ]
-
-    # load or create bookings.xlsx
     if os.path.exists(BOOKINGS_XLSX):
         bookings = pd.read_excel(BOOKINGS_XLSX)
-        for col in required_columns:
-            if col not in bookings.columns:
-                bookings[col] = ""
     else:
-        bookings = pd.DataFrame(columns=required_columns)
+        bookings = pd.DataFrame(columns=[
+            "booking_id","patient_id","name",'dob','age','gender','phone','email','address',
+            'medical_history','allergies','preferred_language','insurance_provider',
+            'created_at','cancel_reason','confirmed','calendly_event_link',
+            "doctor","date_time","form_status"
+        ])
 
     booking_id = len(bookings) + 1
 
     new_row = {
         "booking_id": booking_id,
-        "patient_id": patient['patient_id'],
-        "patient_name": patient['name'],
-        "doctor_id": doctor_id,
-        "doctor_name": doctor_name,
-        "date": date,
-        "slot_start": slot_start,
-        "slot_end": slot_end,
-        "duration_mins": duration_mins,
-        "status": status,
-        "insurance_carrier": insurance_carrier,
-        "insurance_member_id": insurance_member_id,
-        "cancel_reason": cancel_reason,
-        "calendly_event_link": calendly_event_link,
-        "form_status": ""  # initially empty
+        "patient_id": patient_id,
+        "name": patient['name'],
+        "dob": patient['dob'],
+        "age": patient['age'],
+        "gender": patient['gender'],
+        "phone": patient['phone'],
+        "email": patient['email'],
+        "address": patient['address'],
+        "medical_history": patient['medical_history'],
+        "allergies": patient['allergies'],
+        "preferred_language": patient['preferred_language'],
+        "insurance_provider": patient['insurance_provider'],
+        "created_at": datetime.now(),
+        "cancel_reason": "",
+        "confirmed": True,
+        "calendly_event_link": "",
+        "doctor": doctor,
+        "date_time": date_time,
+        "form_status": "pending"
     }
 
     bookings = pd.concat([bookings, pd.DataFrame([new_row])], ignore_index=True)
     bookings.to_excel(BOOKINGS_XLSX, index=False)
     return booking_id
 
-
 def upload_form(booking_id, file_path):
-    """
-    Upload a form file for a given booking and mark 'form_status' as uploaded.
-    """
-    # Load bookings and ensure form_status column exists
-    if os.path.exists(BOOKINGS_XLSX):
-        bookings = pd.read_excel(BOOKINGS_XLSX)
-    else:
-        raise FileNotFoundError("Bookings file not found")
-
+    bookings = pd.read_excel(BOOKINGS_XLSX)
     if booking_id not in bookings['booking_id'].values:
         raise ValueError("Booking ID not found")
 
-    if 'form_status' not in bookings.columns:
-        bookings['form_status'] = ""
-
     os.makedirs("uploaded_forms", exist_ok=True)
     file_name = f"uploaded_forms/{booking_id}_{os.path.basename(file_path)}"
-
     with open(file_path, 'rb') as src, open(file_name, 'wb') as dst:
         dst.write(src.read())
 
-    # Update form_status
     bookings.loc[bookings['booking_id'] == booking_id, "form_status"] = "uploaded"
     bookings.to_excel(BOOKINGS_XLSX, index=False)
-    return file_name
-
     return file_name

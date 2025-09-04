@@ -4,44 +4,42 @@ from datetime import datetime
 
 PATIENT_CSV = "./patients_sample_50.csv"
 BOOKINGS_XLSX = "./bookings.xlsx"
-DOCTOR_XLSX = "./doctor_schedules_sample.xlsx"  # <- your doctor schedule file
+DOCTOR_XLSX = "./doctor_schedules_sample.xlsx"
 
 def load_patients():
-    """Load all patients from CSV."""
     return pd.read_csv(PATIENT_CSV)
 
-def get_doctors():
-    """Load all available doctors from the doctor schedule file."""
+def load_doctor_schedule():
     if not os.path.exists(DOCTOR_XLSX):
         raise FileNotFoundError(f"Doctor schedule file {DOCTOR_XLSX} not found")
     df = pd.read_excel(DOCTOR_XLSX)
-    # Adjust column name if needed: e.g., "Doctor" or "doctor_name"
-    doctor_col = None
-    for col in df.columns:
-        if col.lower() in ("doctor", "doctor_name", "name"):
-            doctor_col = col
-            break
-    if doctor_col is None:
-        raise ValueError(f"No doctor column found in {DOCTOR_XLSX}. Columns: {df.columns}")
-    return df[doctor_col].unique()
+    expected_cols = {"doctor_name", "slot_start", "slot_end", "doctor_id"}
+    if not expected_cols.issubset(set(df.columns)):
+        raise ValueError(f"Expected columns {expected_cols}, but found {set(df.columns)}")
+    return df
 
-def book_appointment(patient_id, doctor, date_time):
-    """Book an appointment for a patient with a doctor at date_time."""
-    # Validate patient exists
+def get_available_doctors():
+    df = load_doctor_schedule()
+    return df['doctor_name'].unique()
+
+def book_appointment(patient_id, doctor_name, date_time):
+    if not os.path.exists(PATIENT_CSV):
+        raise FileNotFoundError(f"Patient file {PATIENT_CSV} not found")
     patients = pd.read_csv(PATIENT_CSV)
     if patient_id not in patients['patient_id'].values:
-        raise ValueError(f"Patient ID {patient_id} not found in {PATIENT_CSV}")
+        raise ValueError(f"Patient ID {patient_id} not found")
     patient = patients.loc[patients['patient_id'] == patient_id].iloc[0]
 
-    # Validate doctor exists
-    valid_doctors = get_doctors()
-    if doctor not in valid_doctors:
+    doc_df = load_doctor_schedule()
+    if doctor_name not in doc_df['doctor_name'].values:
         raise ValueError(
-            f"No doctor '{doctor}' found in {DOCTOR_XLSX}. "
-            f"Available doctors: {list(valid_doctors)}"
+            f"No doctor_name '{doctor_name}' found. Available: {list(doc_df['doctor_name'].unique())}"
         )
+    doc_info = doc_df.loc[doc_df['doctor_name'] == doctor_name].iloc[0]
+    doctor_id = doc_info['doctor_id']
+    slot_start = doc_info['slot_start']
+    slot_end = doc_info['slot_end']
 
-    # Load existing bookings or create new DataFrame
     if os.path.exists(BOOKINGS_XLSX):
         bookings = pd.read_excel(BOOKINGS_XLSX)
     else:
@@ -49,7 +47,7 @@ def book_appointment(patient_id, doctor, date_time):
             "booking_id","patient_id","name",'dob','age','gender','phone','email','address',
             'medical_history','allergies','preferred_language','insurance_provider',
             'created_at','cancel_reason','confirmed','calendly_event_link',
-            "doctor","date_time","form_status"
+            "doctor_name","doctor_id","slot_start","slot_end","date_time","form_status"
         ])
 
     booking_id = len(bookings) + 1
@@ -72,7 +70,10 @@ def book_appointment(patient_id, doctor, date_time):
         "cancel_reason": "",
         "confirmed": True,
         "calendly_event_link": "",
-        "doctor": doctor,
+        "doctor_name": doctor_name,
+        "doctor_id": doctor_id,
+        "slot_start": slot_start,
+        "slot_end": slot_end,
         "date_time": date_time,
         "form_status": "pending"
     }
@@ -82,13 +83,11 @@ def book_appointment(patient_id, doctor, date_time):
     return booking_id
 
 def upload_form(booking_id, file_path):
-    """Upload a form for a given booking."""
     if not os.path.exists(BOOKINGS_XLSX):
         raise FileNotFoundError(f"{BOOKINGS_XLSX} not found")
-
     bookings = pd.read_excel(BOOKINGS_XLSX)
     if booking_id not in bookings['booking_id'].values:
-        raise ValueError(f"Booking ID {booking_id} not found in {BOOKINGS_XLSX}")
+        raise ValueError(f"Booking ID {booking_id} not found")
 
     os.makedirs("uploaded_forms", exist_ok=True)
     file_name = f"uploaded_forms/{booking_id}_{os.path.basename(file_path)}"
@@ -98,3 +97,20 @@ def upload_form(booking_id, file_path):
     bookings.loc[bookings['booking_id'] == booking_id, "form_status"] = "uploaded"
     bookings.to_excel(BOOKINGS_XLSX, index=False)
     return file_name
+
+# 🔹 Test / main code section
+if __name__ == "__main__":
+    # List available doctors
+    print("Available doctors:", get_available_doctors())
+
+    # Book appointment
+    booking_id = book_appointment(
+        patient_id=1,
+        doctor_name="Dr. Patel",     # must match your Excel exactly
+        date_time="2025-09-06 10:00"
+    )
+    print("Booking ID:", booking_id)
+
+    # Upload form for that booking
+    uploaded_path = upload_form(booking_id, "myform.pdf")
+    print("Uploaded file path:", uploaded_path)

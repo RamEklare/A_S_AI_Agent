@@ -8,7 +8,9 @@ BOOKINGS_XLSX = "./bookings.xlsx"
 def load_patients():
     return pd.read_csv(PATIENT_CSV)
 
-def book_appointment(patient_id, doctor, date_time):
+def book_appointment(patient_id, name, dob, age, gender, phone, email, address,
+                     medical_history, allergies, preferred_language,
+                     insurance_provider, created_at, cancel_reason, confirmed, calendly_event_link, doctor, date_time,form_status):
     """Simulate booking logic."""
     if os.path.exists(BOOKINGS_XLSX):
         bookings = pd.read_excel(BOOKINGS_XLSX)

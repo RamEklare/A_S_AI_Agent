@@ -7,9 +7,8 @@ BOOKINGS_XLSX = "./bookings.xlsx"
 
 def load_patients():
     return pd.read_csv(PATIENT_CSV)
-def book_appointment(patient_id, doctor_id, doctor_name, date, slot_start, slot_end,
-                     duration_mins, status, insurance_carrier, insurance_member_id,
-                     cancel_reason, calendly_event_link):
+
+def book_appointment(patient_id, doctor, date_time):
     patients = pd.read_csv(PATIENT_CSV)
     patient = patients.loc[patients['patient_id'] == patient_id].iloc[0]
 
@@ -17,10 +16,10 @@ def book_appointment(patient_id, doctor_id, doctor_name, date, slot_start, slot_
         bookings = pd.read_excel(BOOKINGS_XLSX)
     else:
         bookings = pd.DataFrame(columns=[
-            "booking_id","patient_id","patient_name","doctor_id","doctor_name",
-            "date","slot_start","slot_end","duration_mins","status",
-            "insurance_carrier","insurance_member_id","cancel_reason","calendly_event_link",
-            # plus any extra patient columns you want to keep
+            "booking_id","patient_id","name",'dob','age','gender','phone','email','address',
+            'medical_history','allergies','preferred_language','insurance_provider',
+            'created_at','cancel_reason','confirmed','calendly_event_link',
+            "doctor","date_time","form_status"
         ])
 
     booking_id = len(bookings) + 1
@@ -28,24 +27,29 @@ def book_appointment(patient_id, doctor_id, doctor_name, date, slot_start, slot_
     new_row = {
         "booking_id": booking_id,
         "patient_id": patient_id,
-        "patient_name": patient['name'],
-        "doctor_id": doctor_id,
-        "doctor_name": doctor_name,
-        "date": date,
-        "slot_start": slot_start,
-        "slot_end": slot_end,
-        "duration_mins": duration_mins,
-        "status": status,
-        "insurance_carrier": insurance_carrier,
-        "insurance_member_id": insurance_member_id,
-        "cancel_reason": cancel_reason,
-        "calendly_event_link": calendly_event_link,
+        "name": patient['name'],
+        "dob": patient['dob'],
+        "age": patient['age'],
+        "gender": patient['gender'],
+        "phone": patient['phone'],
+        "email": patient['email'],
+        "address": patient['address'],
+        "medical_history": patient['medical_history'],
+        "allergies": patient['allergies'],
+        "preferred_language": patient['preferred_language'],
+        "insurance_provider": patient['insurance_provider'],
+        "created_at": datetime.now(),
+        "cancel_reason": "",
+        "confirmed": True,
+        "calendly_event_link": "",
+        "doctor": doctor,
+        "date_time": date_time,
+        "form_status": "pending"
     }
 
     bookings = pd.concat([bookings, pd.DataFrame([new_row])], ignore_index=True)
     bookings.to_excel(BOOKINGS_XLSX, index=False)
     return booking_id
-
 
 def upload_form(booking_id, file_path):
     bookings = pd.read_excel(BOOKINGS_XLSX)

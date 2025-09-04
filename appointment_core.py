@@ -13,7 +13,7 @@ def load_doctor_schedule():
     if not os.path.exists(DOCTOR_XLSX):
         raise FileNotFoundError(f"Doctor schedule file {DOCTOR_XLSX} not found")
     df = pd.read_excel(DOCTOR_XLSX)
-    expected_cols = {"doctor_name", "slot_start", "slot_end", "doctor_id"}
+    expected_cols = {"doctor_name", "start_time", "end_time", "doctor_id",'specality'}
     if not expected_cols.issubset(set(df.columns)):
         raise ValueError(f"Expected columns {expected_cols}, but found {set(df.columns)}")
     return df
@@ -37,8 +37,9 @@ def book_appointment(patient_id, doctor_name, date_time):
         )
     doc_info = doc_df.loc[doc_df['doctor_name'] == doctor_name].iloc[0]
     doctor_id = doc_info['doctor_id']
-    slot_start = doc_info['slot_start']
-    slot_end = doc_info['slot_end']
+    start_time = doc_info['start_time']
+    end_time = doc_info['end_time']
+    specality = doc_info['specality']
 
     if os.path.exists(BOOKINGS_XLSX):
         bookings = pd.read_excel(BOOKINGS_XLSX)
@@ -47,7 +48,7 @@ def book_appointment(patient_id, doctor_name, date_time):
             "booking_id","patient_id","name",'dob','age','gender','phone','email','address',
             'medical_history','allergies','preferred_language','insurance_provider',
             'created_at','cancel_reason','confirmed','calendly_event_link',
-            "doctor_name","doctor_id","slot_start","slot_end","date_time","form_status"
+            "doctor_name","doctor_id","start_time","end_time",'specality',"date_time","form_status"
         ])
 
     booking_id = len(bookings) + 1
@@ -72,8 +73,9 @@ def book_appointment(patient_id, doctor_name, date_time):
         "calendly_event_link": "",
         "doctor_name": doctor_name,
         "doctor_id": doctor_id,
-        "slot_start": slot_start,
-        "slot_end": slot_end,
+        "start_time": start_time,
+        "end_time": end_time,
+        'specality':specality,
         "date_time": date_time,
         "form_status": "pending"
     }

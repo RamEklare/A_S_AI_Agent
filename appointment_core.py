@@ -7,40 +7,51 @@ BOOKINGS_XLSX = "./bookings.xlsx"
 
 def load_patients():
     return pd.read_csv(PATIENT_CSV)
+def book_appointment(patient_id, doctor, date_time):
+    patients = pd.read_csv(PATIENT_CSV)
+    patient = patients.loc[patients['patient_id'] == patient_id].iloc[0]
 
-def book_appointment(patient_id, name, dob, age, gender, phone, email, address,
-                     medical_history, allergies, preferred_language,
-                     insurance_provider, created_at, cancel_reason, confirmed, calendly_event_link, doctor, date_time,form_status):
-    """Simulate booking logic."""
     if os.path.exists(BOOKINGS_XLSX):
         bookings = pd.read_excel(BOOKINGS_XLSX)
     else:
-        bookings = pd.DataFrame(columns=["patient_id","name",'dob','age','gender','phone','email','address','medical_history',
-                                        'allergies','preferred_language','insurance_provider','created_at','cancel_reason',
-                                          'confirmed','calendly_event_link',"doctor","date_time","form_status"])
-    booking_id = len(bookings)+1
-    new_row = {"patient_id":patient_id,
-               "name":name,
-               'dob':dob,
-               'age':age,
-               'gender':gender,
-               'phone':phone,
-               'email':email,
-               'address':address,
-               'medical_history':medical_history,
-               'allergies':allergies,
-               'preferred_language':preferred_language,
-               'insurance_provider':insurance_provider,
-               'created_at':created_at,
-               'cancel_reason':cancel_reason,
-               'confirmed':confirmed,
-               'calendly_event_link':calendly_event_link,
-               "doctor":doctor,
-               "date_time":date_time,
-               "form_status":form_status}
-    bookings = pd.concat([bookings,pd.DataFrame([new_row])],ignore_index=True)
-    bookings.to_excel(BOOKINGS_XLSX,index=False)
+        bookings = pd.DataFrame(columns=[ "booking_id","patient_id","name",'dob','age','gender','phone','email','address',
+                                          'medical_history','allergies','preferred_language','insurance_provider',
+                                          'created_at','cancel_reason','confirmed','calendly_event_link',
+                                          "doctor","date_time","form_status"])
+    booking_id = len(bookings) + 1
+
+    new_row = {
+        "booking_id": booking_id,
+        "patient_id": patient_id,
+        "name": patient['name'],
+        "dob": patient['dob'],
+        "age": patient['age'],
+        "gender": patient['gender'],
+        "phone": patient['phone'],
+        "email": patient['email'],
+        "address": patient['address'],
+        "medical_history": patient['medical_history'],
+        "allergies": patient['allergies'],
+        "preferred_language": patient['preferred_language'],
+        "insurance_provider": patient['insurance_provider'],
+        "created_at": datetime.now(),
+        "cancel_reason": "",
+        "confirmed": True,
+        "calendly_event_link": "",
+        "doctor": doctor,
+        "date_time": date_time,
+        "form_status": "pending"
+    }
+
+    bookings = pd.concat([bookings, pd.DataFrame([new_row])], ignore_index=True)
+    bookings.to_excel(BOOKINGS_XLSX, index=False)
     return booking_id
+booking_id = book_appointment(patient_id, doctor, datetime.combine(date, time))
+def book_appointment(patient_id, name, dob, age, gender, phone, email, address,
+                     medical_history, allergies, preferred_language,
+                     insurance_provider, doctor, date_time):
+
+booking_id = book_appointment(patient_id, name_input, dob_input, age_input, gender_input, phone_input, ..., doctor, datetime.combine(date, time))
 
 def upload_form(booking_id, file_path):
     """Mark form as uploaded and save file to disk."""

@@ -4,7 +4,7 @@ from datetime import datetime
 
 PATIENT_CSV = "./patients_sample_50.csv"
 BOOKINGS_XLSX = "./bookings.xlsx"
-DOCTOR_SCHEDULER_XLSX = "./doctor_scheduler.xlsx"
+DOCTOR_SCHEDULER_XLSX = "./doctor_schedules_sample.xlsx"
 
 
 def load_patients():
